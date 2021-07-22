@@ -1,0 +1,50 @@
+#include <stdio.h> 
+#pragma warning (disable : 4996)
+
+int list[100005] = { 0 }, tmp[100005];
+
+void merge(int data[], int p, int q, int r) {
+
+    int i = p, j = q + 1, k = p;
+    while (i <= q && j <= r) {
+        if (data[i] <= data[j]) tmp[k++] = data[i++];
+        else tmp[k++] = data[j++];
+    }
+    while (i <= q) tmp[k++] = data[i++];
+    while (j <= r) tmp[k++] = data[j++];
+    for (int a = p; a <= r; a++) data[a] = tmp[a];
+}
+void mergeSort(int data[], int p, int r) {
+    if (p < r) {
+        int q = (p + r) / 2;
+        mergeSort(data, p, q);
+        mergeSort(data, q + 1, r);
+        merge(data, p, q, r);
+    }
+}
+int binarySearch(int list[], int num, int first, int last) {
+    if (first > last) return -1;
+
+    int mid = (first + last) / 2;
+    if (num == list[mid])
+        return mid;
+
+    else if (num < list[mid])
+        return binarySearch(list, num, first, mid - 1);
+    else
+        return binarySearch(list, num, mid + 1, last);
+}
+
+int main() {
+    int n = 0, m = 0, i = 0, j = 0, k = 0, b = 0;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) scanf("%d", &list[i]);
+    mergeSort(list, 0, n - 1);
+    scanf("%d", &m);
+    for (i = 0; i < m; i++){
+        scanf("%d", &b);
+        if (binarySearch(list, b, 0, n - 1) < 0) printf("0\n");
+        else printf("1\n");
+    }
+    return 0;
+}
