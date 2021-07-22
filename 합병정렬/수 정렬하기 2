@@ -1,0 +1,33 @@
+#include <stdio.h> 
+#pragma warning (disable : 4996)
+
+int list[1000005] = { 0 }, tmp[1000005];
+
+void merge(int data[], int p, int q, int r) {
+
+    int i = p, j = q + 1, k = p;
+    while (i <= q && j <= r) {
+        if (data[i] <= data[j]) tmp[k++] = data[i++];
+        else tmp[k++] = data[j++];
+    }
+    while (i <= q) tmp[k++] = data[i++];
+    while (j <= r) tmp[k++] = data[j++];
+    for (int a = p; a <= r; a++) data[a] = tmp[a];
+}
+void mergeSort(int data[], int p, int r) {
+    if (p < r) {
+        int q = (p + r) / 2;
+        mergeSort(data, p, q);
+        mergeSort(data, q + 1, r);
+        merge(data, p, q, r);
+    }
+}
+
+int main() {
+	int n = 0, i = 0;
+	scanf("%d", &n);
+	for (i = 0; i < n; i++) scanf("%d", &list[i]);
+    mergeSort(list, 0, n - 1);
+    for (i = 0; i < n; i++) printf("%d\n", list[i]);
+    return 0;
+}
